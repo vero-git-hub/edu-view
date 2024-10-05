@@ -1,6 +1,7 @@
 package org.example.eduview.controller;
 
 import org.example.eduview.dto.CollegeDTO;
+import org.example.eduview.dto.CollegeWithCoursesDTO;
 import org.example.eduview.model.College;
 import org.example.eduview.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class CollegeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<College> getCollegeById(@PathVariable Integer id) {
-        return collegeService.getCollegeById(id)
+    public ResponseEntity<CollegeWithCoursesDTO> getCollegeById(@PathVariable Integer id) {
+        return collegeService.getCollegeByIdWithCourses(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

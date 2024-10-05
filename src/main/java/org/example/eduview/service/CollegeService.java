@@ -1,6 +1,8 @@
 package org.example.eduview.service;
 
 import org.example.eduview.dto.CollegeDTO;
+import org.example.eduview.dto.CollegeWithCoursesDTO;
+import org.example.eduview.dto.CourseDTO;
 import org.example.eduview.model.College;
 import org.example.eduview.repository.CollegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,26 @@ public class CollegeService {
 
     public List<College> getAllColleges() {
         return collegeRepository.findAll();
+    }
+
+    public Optional<CollegeWithCoursesDTO> getCollegeByIdWithCourses(Integer id) {
+        return collegeRepository.findById(id).map(college -> {
+            List<CourseDTO> courseDTOs = college.getCourses().stream()
+                    .map(course -> new CourseDTO(
+                            course.getId(),
+                            course.getName(),
+                            course.getDuration()
+                    ))
+                    .collect(Collectors.toList());
+
+            return new CollegeWithCoursesDTO(
+                    college.getId(),
+                    college.getName(),
+                    college.getAccommodationType(),
+                    college.getAccommodationFee(),
+                    courseDTOs
+            );
+        });
     }
 
     public Optional<College> getCollegeById(Integer id) {
