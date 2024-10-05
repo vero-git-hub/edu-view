@@ -1,5 +1,6 @@
 package org.example.eduview.service;
 
+import org.example.eduview.dto.CollegeDTO;
 import org.example.eduview.model.College;
 import org.example.eduview.repository.CollegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author vero-git-hub
@@ -19,6 +21,18 @@ public class CollegeService {
     @Autowired
     public CollegeService(CollegeRepository collegeRepository) {
         this.collegeRepository = collegeRepository;
+    }
+
+    public List<CollegeDTO> getAllCollegeDTOs() {
+        List<College> colleges = collegeRepository.findAll();
+        return colleges.stream()
+                .map(college -> new CollegeDTO(
+                        college.getId(),
+                        college.getName(),
+                        college.getAccommodationType(),
+                        college.getAccommodationFee()
+                ))
+                .collect(Collectors.toList());
     }
 
     public List<College> getAllColleges() {

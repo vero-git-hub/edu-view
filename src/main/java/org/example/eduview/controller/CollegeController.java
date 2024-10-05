@@ -1,5 +1,6 @@
 package org.example.eduview.controller;
 
+import org.example.eduview.dto.CollegeDTO;
 import org.example.eduview.model.College;
 import org.example.eduview.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class CollegeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<College>> getAllColleges() {
-        List<College> colleges = collegeService.getAllColleges();
+    public ResponseEntity<List<CollegeDTO>> getAllColleges() {
+        List<CollegeDTO> colleges = collegeService.getAllCollegeDTOs();
         return ResponseEntity.ok(colleges);
     }
 
