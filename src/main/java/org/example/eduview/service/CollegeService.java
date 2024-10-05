@@ -27,13 +27,25 @@ public class CollegeService {
 
     public List<CollegeDTO> getAllCollegeDTOs() {
         List<College> colleges = collegeRepository.findAll();
+
         return colleges.stream()
-                .map(college -> new CollegeDTO(
-                        college.getId(),
-                        college.getName(),
-                        college.getAccommodationType(),
-                        college.getAccommodationFee()
-                ))
+                .map(college -> {
+                    List<CourseDTO> courseDTOs = college.getCourses().stream()
+                            .map(course -> new CourseDTO(
+                                    course.getId(),
+                                    course.getName(),
+                                    course.getDuration()
+                            ))
+                            .collect(Collectors.toList());
+
+                    return new CollegeDTO(
+                            college.getId(),
+                            college.getName(),
+                            college.getAccommodationType(),
+                            college.getAccommodationFee(),
+                            courseDTOs
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
